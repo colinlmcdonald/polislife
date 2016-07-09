@@ -33,49 +33,12 @@ export function processingLogin() {
   }
 }
 
-export function userRegister(email, password) {
+export function userRegister(email, password, testing) {
+  let url
+  testing ? url = 'https://localhost:3500/signup' : url = '/signup'
   return dispatch => {
     dispatch(processRegistration())
-    return fetch('/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    }).then(response => response.json())
-      .then((user) => {
-        if (user) {
-          handleUser(user)
-          return dispatch(loginSuccess())
-        } else {
-          return dispatch(registrationError())
-        }
-      })
-  }
-}
-
-export function processRegistration() {
-  return {
-    type: PROCESSING_REGISTRATION
-  }
-}
-
-export function processLogout() {
-  browserHistory.push('login')
-  localStorage.setItem('token', undefined)
-  localStorage.setItem('bills', undefined)
-  return {
-    type: USER_LOGOUT
-  }
-}
-
-export function userLogin(email, password) {
-  return dispatch => {
-    dispatch(processRegistration())
-    return fetch('/signin', {
+    return fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -92,7 +55,55 @@ export function userLogin(email, password) {
       }
     }).then(function(user) {
       if (user) {
-        handleUser(user)
+        if (!testing) handleUser(user)
+        return dispatch(loginSuccess())
+      } else {
+        return dispatch(registrationError())
+      }
+    })
+  }
+}
+
+export function processRegistration() {
+  return {
+    type: PROCESSING_REGISTRATION
+  }
+}
+
+export function processLogout(testing) {
+  if (!testing) {
+    browserHistory.push('login')
+    localStorage.setItem('token', undefined)
+    localStorage.setItem('bills', undefined)
+  }
+  return {
+    type: USER_LOGOUT
+  }
+}
+
+export function userLogin(email, password, testing) {
+  let url
+  testing ? url = 'https://localhost:3500/signin' : 'signin'
+  return dispatch => {
+    dispatch(processRegistration())
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }).then(function(user) {
+      if (user.status === 200) {
+        return user.json()
+      } else {
+        return false
+      }
+    }).then(function(user) {
+      if (user) {
+        if (!testing) handleUser(user)
         return dispatch(loginSuccess())
       } else {
         return dispatch(loginError())

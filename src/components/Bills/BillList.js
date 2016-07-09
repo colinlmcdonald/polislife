@@ -16,7 +16,7 @@ export class BillList extends Component {
 
   handleLoginCheck(e, bill) {
     const { dispatch, yes, no, user } = this.props
-    e.preventDefault()
+    if (e) { e.preventDefault }
 
     if (user) {
       if (bill === yes) {

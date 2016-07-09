@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for reducers/reducerRepWords.js</title>
+    <title>Code coverage report for components/Bills/BillVotes.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">all files</a> / <a href="index.html">reducers/</a> reducerRepWords.js
+      <a href="../../index.html">all files</a> / <a href="index.html">components/Bills/</a> BillVotes.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">90.91% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>10/11</span>
+        <span class='fraction'>3/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
     </div>
   </div>
@@ -69,11 +69,7 @@
 24
 25
 26
-27
-28
-29</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+27</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,35 +95,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RECEIVE_REP_WORDS, MORE_REP_WORDS, LESS_REP_WORDS } from '../actions/actionRepWords'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from 'react'
 &nbsp;
-export default function repWords (state = {
-  words: null,
-  display: null,
-  index: 10
-}, action) {
-  switch (action.type) {
-    case RECEIVE_REP_WORDS:
-      return Object.assign({}, state, {
-        words: action.words,
-        display: action.words.slice(state.index - 10, state.index),
-      })
-    case MORE_REP_WORDS:
-      s</span>tate.index + 10 &gt; state.words.length ? state.index = state.words.length : <span class="branch-1 cbranch-no" title="branch not covered" >state.index += 10
-      return Object.assign({}, state, {
-        display: state.words.slice(state.index - 10, state.index),
-        index: state.index
-      })
-    case LESS_REP_WORDS:
-      state.index - 10 &lt; 10 ? state.index = 10 : state.index -= 10
-      return Object.assign({}, state, {
-        display: state.words.slice(state.index - 10, state.index),
-        index: state.index
-      })
-    default:
-      return state
-  }
-}</pre></td></tr>
+// import './Bills.scss';
+&nbsp;
+const BillVotes = ({handleLoginCheck, bill, onNoChange, onYesChange}) =&gt; (
+  &lt;div&gt;
+    &lt;b&gt;Bill: &lt;/b&gt;{bill.vote.question}&lt;br /&gt;
+    &lt;b&gt;Date: &lt;/b&gt;{bill.vote.created}&lt;br /&gt;
+    &lt;b&gt;Current Status: &lt;/b&gt;{bill.vote.result}&lt;br /&gt;
+    &lt;b&gt;Check Out The Full Text On Govtrack&lt;/b&gt; &lt;a href={bill.vote.link} target="_blank"&gt;here&lt;/a&gt; &lt;br /&gt;
+    &lt;b&gt;Your Rep Voted: &lt;/b&gt;{bill.option.value}&lt;br /&gt;
+&nbsp;
+    &lt;form className="user_vote" action="#" onSubmit={e =&gt; handleLoginCheck(e, bill)}&gt;
+      &lt;input id="yes_vote" type="radio" name="vote" value="yea" onClick={() =&gt; onYesChange(bill)}/&gt; Yes
+       &lt;br /&gt;
+      &lt;input id="no_vote" type="radio" name="vote" value="nay" onClick={() =&gt; onNoChange(bill)}/&gt; No 
+      &lt;br /&gt;
+      &lt;input type="submit" value='Vote!' className="btn btn-default" /&gt;
+    &lt;/form&gt;
+      {b</span>ill.login === false ? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;div className='registration-error'&gt;You must be logged in to vote&lt;/div&gt; : null}
+      {b</span>ill.voted === true ? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;div className='vote-indicator'&gt;You voted yes!&lt;/div&gt; : null}
+      {b</span>ill.voted === false ? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;div className='vote-indicator'&gt;You voted no!&lt;/div&gt; : null}
+    &lt;hr /&gt;
+  &lt;/div&gt; 
+)
+&nbsp;
+export default BillVotes</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
@@ -136,7 +130,7 @@ export default function repWords (state = {
   generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 08 2016 17:20:28 GMT-0700 (PDT)
 </div>
 </div>
-<script src="../prettify.js"></script>
+<script src="../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -144,6 +138,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="../sorter.js"></script>
+<script src="../../sorter.js"></script>
 </body>
 </html>

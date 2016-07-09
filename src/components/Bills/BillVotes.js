@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import './Bills.scss';
+// import './Bills.scss';
 
 const BillVotes = ({handleLoginCheck, bill, onNoChange, onYesChange}) => (
   <div>
-    Bill: {bill.vote.question}<br />
-    Date: {bill.vote.created}<br />
-    Current Status: {bill.vote.result}<br />
-    Check Out The Full Text On Govtrack <a href={bill.vote.link} target="_blank">here</a> <br />
-    Your Rep Voted: {bill.option.value}<br />
+    <b>Bill: </b>{bill.vote.question}<br />
+    <b>Date: </b>{bill.vote.created}<br />
+    <b>Current Status: </b>{bill.vote.result}<br />
+    <b>Check Out The Full Text On Govtrack</b> <a href={bill.vote.link} target="_blank">here</a> <br />
+    <b>Your Rep Voted: </b>{bill.option.value}<br />
 
     <form className="user_vote" action="#" onSubmit={e => handleLoginCheck(e, bill)}>
-      <input type="radio" name="vote" value="yea" onChange={e => onYesChange(bill)}/> Yes
+      <input id="yes_vote" type="radio" name="vote" value="yea" onClick={() => onYesChange(bill)}/> Yes
        <br />
-      <input type="radio" name="vote" value="nay" onChange={e => onNoChange(bill)}/> No 
+      <input id="no_vote" type="radio" name="vote" value="nay" onClick={() => onNoChange(bill)}/> No 
       <br />
       <input type="submit" value='Vote!' className="btn btn-default" />
     </form>

@@ -10,10 +10,11 @@ import { shallow, mount }           from 'enzyme'
 import * as actions                 from '../src/actions/actionBills'
 import { USER_LOGIN_SUCCESS }       from '../src/actions/actionLogin'
 import bills                        from '../src/reducers/reducerBills'
-import ConnectedUpcomingRepBills, { UpcomingRepBills } from '../src/components/Bills/UpcomingRepBills'
+import { UpcomingRepBills }         from '../src/components/Bills/UpcomingRepBills'
 import * as BillList                from '../src/components/Bills/BillList'
 import * as Spinner                 from '../src/components/Spinner/Spinner'
-import * as Bill                    from '../src/components/Bills/Bill'
+import Bill                         from '../src/components/Bills/Bill'
+import BillVotes                    from '../src/components/Bills/BillVotes'
 
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
@@ -349,7 +350,7 @@ describe('UpcomingRepBills Component', () => {
   })
 })
 
-describe('BillList and Bills components', () => {
+describe('BillList and BillVotes and Bills components', () => {
   function randomNum() {
     return Math.floor(Math.random() * 1000)
   }
@@ -361,7 +362,16 @@ describe('BillList and Bills components', () => {
         billNumber: randomNum,
         billName: 'World Peace',
         fullTextLink: 'www.worldpeace.com',
-        representative: true
+        representative: true,
+        vote: {
+          question: 'blah blah',
+          created: 'sometime',
+          result: 'Completed',
+          link: 'www.google.com',
+        },
+        option: {
+          value: 'yea'
+        }
       })
     }
     for (var i = 0; i < 5; i++) {
@@ -377,11 +387,14 @@ describe('BillList and Bills components', () => {
   }
   const bills = mockBills()
   let role = 'representative'
-  let dispatch = sinon.spy()
+  const dispatch = sinon.spy()
+  const onYesChange = sinon.spy()
+  const onNoChange = sinon.spy()
+  const handleLoginCheck = sinon.spy() 
   let wrapper = mount(<BillList.BillList role={role} dispatch={dispatch} bills={bills} billsToShow={10}/>)
-
+  let children = wrapper.children()
   it('if a role is specified, displays Bills for that type', () => {
-    let children = wrapper.children()
+    children = wrapper.children()
     let newChildren = children.filterWhere(node => {
       if(node.props('bill').bill) {
         return node.props('bill').bill.representative === true
@@ -391,25 +404,66 @@ describe('BillList and Bills components', () => {
   })
 
   it('if no role is specified, displays all Upcoming Bills', () => {
-    wrapper = mount(<BillList.BillList dispatch={dispatch} bills={bills} billsToShow={10}/>)
-    let children = wrapper.children()
+    children = wrapper.children()
     let newChildren = children.filterWhere(node => node.props('bill').type === undefined)
     expect(newChildren).to.have.length(10)
   })
 
-  it('dispatches an update of the Yes vote when Yes is clicked on for that bill', () => {
-    console.log(wrapper.filterWhere(node => node.props('key') === 0))
+  it('should dispatch userVotes when handleLoginCheck is called if there is a user', () => {
+    let userVotes = sinon.spy(actions, 'userVotes')
+    wrapper = shallow(<BillList.BillList dispatch={dispatch} bills={bills} billsToShow={10} user={true} yes={bills[0]}/>)
+    wrapper.instance().handleLoginCheck(undefined, bills[0])
+    expect(userVotes.calledOnce).to.be.true
   })
 
-  it('dispatches an update of the No vote when No is clicked on for that bill', () => {
-
+  it('should dispatch loginCheck when handleLoginCheck is called if there is no user', () => {
+    let loginCheck = sinon.spy(actions, 'loginCheck')
+    wrapper = shallow(<BillList.BillList dispatch={dispatch} bills={bills} billsToShow={10} user={false} yes={bills[0]}/>)
+    wrapper.instance().handleLoginCheck(undefined, bills[0])
+    expect(loginCheck.calledOnce).to.be.true
   })
 
-  it('displays an error message if the user is not logged in when they try to vote', () => {
-
+  it('should dispatch a yes change', () => {
+    let yes = sinon.spy(actions, 'yes')
+    wrapper.instance().onYesChange(bills[0])
+    expect(yes.calledOnce).to.be.true
   })
 
-  it('votes on a bill when a user is logged in', () => {
+  it('should dispatch a no change', () => {
+    let no = sinon.spy(actions, 'no')
+    wrapper.instance().onNoChange(bills[0])
+    expect(no.calledOnce).to.be.true
+  })
 
+  it('Bill calls onYesVote when Yes is clicked on for that bill', () => {
+    wrapper = shallow(<Bill bill={bills[0]} onYesChange={onYesChange} onNoChange={onNoChange} handleLoginCheck={handleLoginCheck}/>)
+    wrapper.find('#yes_vote').simulate('click')
+    expect(onYesChange.calledWith(bills[0])).to.be.true
+  })
+
+  it('Bill calls onNoVote when No is clicked on for that bill', () => {
+    wrapper.find('#no_vote').simulate('click')
+    expect(onNoChange.calledWith(bills[0])).to.be.true
+  })
+
+  it('Bill calls handleLoginCheck when a vote is submitted', () => {
+    wrapper.find('.user_vote').simulate('submit')
+    expect(handleLoginCheck.calledOnce).to.be.true
+  })
+
+  it('Bill Votes calls onYesVote when Yes is clicked on for that bill', () => {
+    wrapper = shallow(<BillVotes bill={bills[0]} onYesChange={onYesChange} onNoChange={onNoChange} handleLoginCheck={handleLoginCheck}/>)
+    wrapper.find('#yes_vote').simulate('click')
+    expect(onYesChange.calledWith(bills[0])).to.be.true
+  })
+
+  it('Bill Votes calls onNoVote when No is clicked on for that bill', () => {
+    wrapper.find('#no_vote').simulate('click')
+    expect(onNoChange.calledWith(bills[0])).to.be.true
+  })
+
+  it('Bill Votes calls handleLoginCheck when a vote is submitted', () => {
+    wrapper.find('.user_vote').simulate('submit')
+    expect(handleLoginCheck.calledTwice).to.be.true
   })
 })

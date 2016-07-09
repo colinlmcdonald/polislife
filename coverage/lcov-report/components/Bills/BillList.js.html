@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">22.22% </span>
+        <span class="strong">88.89% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>2/9</span>
+        <span class='fraction'>8/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/10</span>
+        <span class='fraction'>8/12</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/3</span>
+        <span class='fraction'>2/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">22.22% </span>
+        <span class="strong">88.89% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>2/9</span>
+        <span class='fraction'>8/9</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -128,9 +128,7 @@
 83
 84
 85
-86
-87
-88</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+86</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,13 +146,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,9 +175,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,8 +185,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,7 +221,7 @@ import Bill from './Bill'
 &nbsp;
 export class BillList extends Component {
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor(props) {</span>
+  constructor(props) {
     super(props)
 &nbsp;
     this.onYesChange = this.onYesChange.bind(this)
@@ -235,10 +231,10 @@ export class BillList extends Component {
 &nbsp;
   handleLoginCheck(e, bill) {
     const { dispatch, yes, no, user } = this.props
-    e.preventDefault()
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (e) { e.preventDefault }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (user) {</span>
-<span class="cstat-no" title="statement not covered" >      if (bill === yes) {</span>
+    if (user) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (bill === yes) {
         dispatch(userVotes(bill, true, user))
 &nbsp;
       } else <span class="cstat-no" title="statement not covered" >if (bill === no) {</span>
@@ -263,20 +259,18 @@ export class BillList extends Component {
     let count = 0
     return (
       &lt;div&gt;
-       {bills.map( <span class="fstat-no" title="function not covered" >(bill, i)=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >         if (role) {</span>
-<span class="cstat-no" title="statement not covered" >          if (bill[role]) {</span>
-<span class="cstat-no" title="statement not covered" >            while (count &lt; billsToShow) {</span>
-              count++
-              return &lt;Bill bill={bill} 
-                           handleLoginCheck={this.handleLoginCheck}
-                           onYesChange={this.onYesChange}
-                           onNoChange={this.onNoChange} 
-                           key={i}/&gt;
-            }
-           }
+       {bills.map( (bill, i)=&gt; {
+         if (role &amp;&amp; bill[role]) {
+          while (count &lt; billsToShow) {
+            count++
+            return &lt;Bill bill={bill} 
+                         handleLoginCheck={this.handleLoginCheck}
+                         onYesChange={this.onYesChange}
+                         onNoChange={this.onNoChange} 
+                         key={i}/&gt;
+          }
         } else {
-<span class="cstat-no" title="statement not covered" >           while (count &lt; billsToShow) {</span>
+           while (count &lt; billsToShow) {
                 count++
                 return &lt;Bill bill={bill} 
                              handleLoginCheck={this.handleLoginCheck}
@@ -310,7 +304,7 @@ export default connect(mapStateToProps)(BillList)</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jul 05 2016 17:01:47 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 08 2016 17:20:28 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>
