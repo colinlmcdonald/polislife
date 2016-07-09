@@ -1,82 +1,62 @@
 import React                        from 'react'
-import {
-  renderIntoDocument,
-  findRenderedDOMComponentWithTag
-}                                   from 'react-addons-test-utils'
 import nock                         from 'nock'
 import configureMockStore           from 'redux-mock-store'
 import thunk                        from 'redux-thunk'
 import {expect}                     from 'chai'
-import { GET_CONTRIBUTOR_DATA,
-         SET_GRAPH_TYPE,
-         setContributorData,
-         setGraphType }             from '../src/actions/actionContributor'
+import * as actions                 from '../src/actions/actionContributor'
 import contributorData              from '../src/reducers/reducerContributor'
 
+const middlewares = [ thunk ]
+const mockStore = configureMockStore(middlewares)
 
-xdescribe('Contributor Data Ecosystem', () => {
-
-  it('should create an action to change the graph type', () => {
-    const expectedAction = {
-      type: SET_GRAPH_TYPE
-    }
-    expect(setGraphType()).to.deep.equal(expectedAction)
-  })
+describe('Contributor Data Ecosystem', () => {
+  const data = [{
+    ind_uni_con: 1000,
+    ind_ite_con: 1200,
+    oth_com_con: 1300,
+    par_com_con: 1400,
+    tot_con: 1500,
+    cas_on_han_clo_of_per: 1700,
+    cas_on_han_beg_of_per: 1600
+  }]
 
   it('should return the initial state', () => {
     expect(
       contributorData(undefined, {})
-      ).to.deep.equal(
-        {
-        grouped: false,
-        m: null,
-        n: null,
-        layers: null
-        }
-      )
-  })
-
-  it('Should handle SET_GRAPH_TYPE', () => {
-    expect(
-      contributorData([], {
-        type: SET_GRAPH_TYPE,
-      })
-    ).to.deep.equal({
-      grouped: true
-      }
-    )
-  })
-
-  xit('Should create an action to set the contributor data', () => {
-    const data = {
-      m: 4,
-      n: 3,
-      layers: 12
-    }
-    const expectedAction = {
-      type: GET_CONTRIBUTOR_DATA,
-      data: data
-    }
-    expect(
-      setContributorData().to.deep.equal({
-      data: {
-        m: 4,
-        n: 3,
-        layers: 12
-      },
-      type: GET_CONTRIBUTOR_DATA
-      
-      })
-    )
+      ).to.deep.equal({ contributions: null })
   })
 
   it('Should handle GET_CONTRIBUTOR_DATA', () => {
     expect(
       contributorData([], {
-        type: GET_CONTRIBUTOR_DATA,
-        data: data
+        type: actions.GET_CONTRIBUTOR_DATA,
+        data: 'hello'
       })
-    )
+    ).to.deep.equal({ contributions: 'hello' })
+  })
+
+  it('Should create an action to set the contributor data', () => {
+    nock('https://localhost:3500')
+      .get('/api/data/CandidateSummary/94605/2016')
+      .reply(200, data)
+
+    const expectedActions = [{ type: actions.GET_CONTRIBUTOR_DATA,
+                               data: [
+                                ['individual > $200', 1200],
+                                ['individual < $200', 1000],
+                                ['other committee', 1300],
+                                ['party committee', 1400],
+                                ['total', 1500],
+                                ['Net Gains', 100]
+                               ]
+                            }]
+
+    const store = mockStore({ bills: [] })
+
+    return store.dispatch(actions.getContributorData(94605, true))
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions)
+      })
   })
 })
 

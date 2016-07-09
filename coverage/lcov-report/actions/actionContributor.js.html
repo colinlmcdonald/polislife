@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>3/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/7</span>
+        <span class='fraction'>5/5</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>3/3</span>
       </div>
     </div>
   </div>
@@ -83,37 +83,7 @@
 38
 39
 40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+41</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -143,37 +113,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,9 +126,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import fetch from 'isomorphic-fetch'
 &nbsp;
 export const GET_CONTRIBUTOR_DATA = 'GET_CONTRIBUTOR_DATA'
-export const SET_GRAPH_TYPE = 'SET_GRAPH_TYPE'
 &nbsp;
-<span class="fstat-no" title="function not covered" >function processCandidate(candidateData) {</span>
+export function processCandidate(candidateData) {
   const data = []
   //console.log('data from processCandidate', candidateData)
   //[{ can_nam: 'etc'}, {can_nam: 'etc2'}]
@@ -201,53 +142,25 @@ export const SET_GRAPH_TYPE = 'SET_GRAPH_TYPE'
   return data
 }
 &nbsp;
-export <span class="fstat-no" title="function not covered" >function getContributorData(zipcode) {</span>
-  return <span class="fstat-no" title="function not covered" >dispatch =&gt; {</span>
-    return fetch('/api/data/CandidateSummary/' + zipcode + '/2016')
+export function getContributorData(zipcode, testing) {
+  let url
+  t</span>esting ? url = 'https://localhost:3500/api/data/CandidateSummary/' : <span class="branch-1 cbranch-no" title="branch not covered" >'/api/data/CandidateSummary/'
+  return dispatch =&gt; {
+    return fetch(url + zipcode + '/2016')
       .then(response =&gt; response.json())
-      .then(<span class="fstat-no" title="function not covered" >json =&gt; {</span>
+      .then(json =&gt; {
         //console.log('this is in getContributorData', json)
         dispatch(receiveContributorData(processCandidate(json)))
       })
   }
 }
 &nbsp;
-export <span class="fstat-no" title="function not covered" >function receiveContributorData(data) {</span>
+export function receiveContributorData(data) {
   //console.log('this is in receiveContributorData', data)
 	return {
 		type: GET_CONTRIBUTOR_DATA,
 		data
 	}
-}
-&nbsp;
-export <span class="fstat-no" title="function not covered" >function setGraphType() {</span>
-  return {
-    type: SET_GRAPH_TYPE
-  }
-}
-&nbsp;
-<span class="fstat-no" title="function not covered" >function createData(data) {</span>
-  //console.log('this should get data from receiveContributorData', data)
-	let n = 6 // number of layers
-  let m = 3 // number of bars
-&nbsp;
-  let layers = [
-    [{x: 0, y: 3410}, {x:1, y: 8301}, {x: 2, y: 23152.81}],
-    [{x: 0, y: 153550}, {x: 1, y: 50550}, {x: 2, y: 377748}],
-    [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}],
-    [{x: 0, y: 0}, {x: 1, y: 35748.35}, {x: 2, y: 279609.1}],
-    [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}],
-    [{x: 0, y: 156960}, {x: 1, y: 94599.35}, {x: 2, y: 680509.91}]
-  ]
-  let stack = d3.layout.stack()
-&nbsp;
-  let theseLayers = stack(layers)
-  return {
-    m: m,
-    n: n,
-    layers: theseLayers,
-    data
-  }
 }
 &nbsp;
 &nbsp;</pre></td></tr>
@@ -256,7 +169,7 @@ export <span class="fstat-no" title="function not covered" >function setGraphTyp
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 08 2016 17:20:28 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 08 2016 20:49:50 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../prettify.js"></script>
